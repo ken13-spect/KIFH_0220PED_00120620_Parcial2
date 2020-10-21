@@ -1,187 +1,160 @@
 #include <iostream>
-#include <queue>
 #include <vector>
 #include <string>
+#include <queue>
 using namespace std;
 
-/*se me olvido algo mas no se que es */
+struct Producto{
+string nombre;
+float precio;
+}; 
+struct Producto producto;
 
-struct producto {
-    string nombre;
-    float precio_unitario;
-};
-struct pedido{
-    string apellido;
-    vector<producto>listacomida;
-};
-
-
-int elegir(){
-    int productoacomprar;
-    do{
-        cout << "-- Elegir el producto a comprar----" << endl;
-        cout << "1.Dona"<< endl;
-        cout << "2.Plato"<< endl;
-        cout << "3.Calcular total" << endl;
-        cout << "4.salir"<< endl;
-        cin >> productoacomprar;
-    }while(productoacomprar >4 || productoacomprar < 0);
-    return productoacomprar;
-}
-producto ProductoComprado(int n) {
-  producto nuevo;
-  switch (n) {
-  case 1:
-    nuevo.nombre = " Dona sencilla";
-    nuevo.precio_unitario = 1.00;
-    break;
-  case 2:
-    nuevo.nombre = " Dona rellena de leche";
-    nuevo.precio_unitario = 1.25;
-    break;
-  case 3:
-    nuevo.nombre = " Dona sabor especial";
-    nuevo.precio_unitario = 1.50;
-    break;
-  case 4:
-    nuevo.nombre = " Desayuno";
-    nuevo.precio_unitario = 2.5;
-    break;
-  case 5:
-    nuevo.nombre = "almuerzo";
-    nuevo.precio_unitario = 5;
-    break;
-  case 6:
-    nuevo.nombre = "cena";
-    nuevo.precio_unitario = 3.5;
-    break;
-  }
-  return nuevo;
-}
-
-void comprarDona(queue<pedido>&dona, pedido &penido){
-    int opcion;
-    do{
-        cout << "-----Donas ---" << endl;
-         cout << "1.Dona Sencilla ----- $1.00" << endl;
-        cout << " 2. Dona Rellena de leche ----- $1.25" << endl;
-        cout << "3. Donas Sabores especiales ----- $1.50" << endl;
-         cout << "4. Regresar" << endl;
-         cin >> opcion;
-         switch (opcion)
-         {
-             case 1 :
-             penido.listacomida.push_back(ProductoComprado(1)); break;
-             case 2: 
-             penido.listacomida.push_back(ProductoComprado(2)); break;
-             case 3:
-             penido.listacomida.push_back(ProductoComprado(3)); break;
-            case  4: break;
-            default: cout << "opcion ingresada no valida" << endl;
-         }
-    }while(opcion != 4);
-}
+ struct Pedido{
+     string apellido;
+     vector<Producto>lista_comida;
+ };
+ struct Pedido pedido;
 
 
-void Plato(queue<pedido> &platos, pedido &Pedido) {
-  int opcion;
-  do {
-    cout << "-- MENU PLATOS --" << endl;
-    cout << "1. Desayuno - $2.50" << endl;
-    cout << "2. Almuerzo - $5.00" << endl;
-    cout << "3. Cena - $3.50" << endl;
-    cout << "4. Regresar" << endl;
-    cin >> opcion;
-
-    switch (opcion) {
+ float menuDonas(queue<Pedido>dona){
+float totalcliente =0;
+ bool cont= true;
+while(cont != false){
+     int opcion;
+     cout << "Ingrese la opcion que desee:" << endl;
+     cout << "1.Ingresar dona" << endl;
+     cout << "2. Optener el total del cliente" << endl;
+     cout << "3.Salir" << endl;
+     cout <<"\n OPCION :" << endl;
+     cin>>opcion;cin.ignore();
+    
+    switch (opcion)
+    {
     case 1:
-      Pedido.listacomida.push_back(ProductoComprado(4));
-      break;
-    case 2:
-      Pedido.listacomida.push_back(ProductoComprado(5));
-      break;
-    case 3:
-      Pedido.listacomida.push_back(ProductoComprado(6));
-      break;
-    case 4: break;
-    default:
-      cout << "Ingrese una opcion valida" << endl;
-      break;
+cout << "Ingrese el tipo de dona:" ; getline(cin,producto.nombre);
+cout << "Ingrese le precio : $"; cin>>producto.precio;
+pedido.lista_comida.push_back(producto);
+totalcliente += producto.precio;
+        break;
+
+        case 2: 
+        // aqui ya le esta cobrando una ves el usuario eleigio tadas las donas que quiso
+        cout << "Apellido del cliente ;"; getline(cin,pedido.apellido);
+        cout << "El total que el cliente va a pagar es de : $ " << totalcliente <<  " dolares " << endl;
+        dona.push(pedido);
+        break;
+       case 3: cont = false; break;
+    default: cout << "opcion no valida" << endl;
+        break;
     }
-  } while (opcion != 4);
-}
-
-
-void atender(queue<pedido>&coladona,queue<pedido>&colaplato){
-    pedido pedidocliente;
-    int productoelegir=0;
-    cout << "Ingrese su apellido:"; getline(cin,pedidocliente.apellido);
-    productoelegir = elegir();
- switch(productoelegir){
-     case 1: comprarDona(coladona,pedidocliente);
-     coladona.push(pedidocliente);
-     break;
-     case 2:
-     Plato(colaplato,pedidocliente);
-     colaplato.push(pedidocliente);
-      break;
-
-      case 3:     break;
-     case 4:  break;
  }
 
-}
+ return totalcliente;
 
-void calcular(queue<pedido>s){
-    float total  = 0;
-queue<pedido>aux = s;
-        float totalventas;
-        while(!s.empty()){
-          pedido aux = s.front();
-          while(!aux.listacomida.empty()){
-              producto aux2 = aux.listacomida.back(); // accediendo a el primer dato de mi lista
-              total+= aux2.precio_unitario;
-              aux.listacomida.pop_back();// borrandolo par ano volverlo a sumar 
-        }
-            s.pop();
-        }
+ }
 
-        cout << "La ganacia obtenida es : $" << total  << endl;
-}
-void menu(queue<pedido>&donas,queue<pedido>&platos){
-    int opcion;
-    bool  continuar= true;
-    while(continuar){
-    cout << "MENU DE LA CAJA REGISTRADORA" << endl;
-    cout << "1. Atender pedidios de clientes" << endl;
-    cout << "2. Mostrar ganancias por venta de donas" << endl;
-    cout << "3. Mostrar ganancias por venta de platos fuertes" << endl;
-    cout << "4. Salir" << endl;
 
-    cout << "\n Accion a realizar:"; cin>>opcion;cin.ignore();
-    switch(opcion){
-        case 1:
-        atender(donas,platos);
-         break;
-        case 2: 
-        calcular(donas);
+
+
+float menuPlatos(queue<Pedido>plato){
+float totalcliente =0;
+ bool cont= true;
+while(cont != false){
+     int opcion;
+     cout << "Ingrese la opcion que desee:" << endl;
+     cout << "1.Ingresar Plato fuerte " << endl;
+     cout << "2. Optener el total del cliente" << endl;
+     cout << "3.Salir" << endl;
+     cout <<"\n OPCION :" << endl;
+     cin>>opcion;cin.ignore();
+    
+    switch (opcion)
+    {
+    case 1:
+cout << "Ingrese el nombre del plato:" ; getline(cin,producto.nombre);
+cout << "Ingrese le precio : $"; cin>>producto.precio;
+pedido.lista_comida.push_back(producto);
+totalcliente += producto.precio;
         break;
-        case 3:
-        calcular(platos);
-         break;
-        case 4 : continuar = false; break;
-        default : cout << "Opcion no valida" << endl;
+
+        case 2: 
+        // aqui ya le esta cobrando una ves el usuario eleigio tadas las donas que quiso
+        cout << "Apellido del cliente:"; getline(cin,pedido.apellido);
+        cout << "El total que el cliente va a pagar es de : $ " << totalcliente <<  " dolares " << endl;
+        plato.push(pedido);
+
+        cout << "Guardando pedido ...." << endl;
+        break;
+       case 3: cont = false; break;
+    default: cout << "opcion no valida" << endl;
+        break;
     }
-}
-}
+ }
 
+ return totalcliente;
 
-int main() {
-  queue<pedido> donas, platos;
-  menu(donas, platos);
-  return 0;
 }
 
 
+int main(){
+
+queue<Pedido>dona,plato;
+bool sta = true;
+float ganadona=0;
+float ganaplato=0;
+  cout << endl;
+    int op;
+    bool cont = true;
+    do{
+        cout << "CAJA REGISTRADORA " << endl;
+        cout <<"Que accion desea ejecutar " << endl;
+        cout << "1.Atender clientes" << endl;
+        cout << "2. Total de ganancias por la venta de donas" << endl;
+        cout << "3. Total de ganancias por la venta de platos fuertes" << endl;
+        cout << "4. Salir " << endl;
+        cout << "\n Ingrese la opcion deseada" << endl;
+        cin>>op;
+int opcion;
+
+        switch(op){
+
+            case 1:
+            do{
+                cout << "Ingrese la accion a ejecutar " << endl;
+                cout << "1.Vender donas" << endl;
+                cout << "2.Vender Platos" << endl;
+                cout << "3. Regresar" << endl;
+                cout << "\n OPcion:" << endl;
+                cin>>opcion;
+                switch(opcion){
+                    case 1: ganadona +=menuDonas(dona); break;
+                    case 2: ganaplato +=menuPlatos(plato);break;
+                    case 3: break;
+                    default : cout << "opcion invalida" << endl;
+
+                }
+            }while(opcion!=3);
+
+            break;
+            case 2:
+            cout << "El total de ganancias por la venta de donas es de: $ " << ganadona << " dolares." << endl;
+            break;
+            case 3:
+            cout << "El total de ganancias por la venta de platos es de: $ " << ganaplato << " dolares." << endl;
+            break;
+            case 4: 
+            cont = false; break;
+            default: cout << "opcion no valida" << endl;break;
 
 
+
+        }
+
+
+
+
+    }while(cont);
+
+    
+}
